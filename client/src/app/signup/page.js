@@ -1,7 +1,10 @@
 'use client';
-import { useState } from 'react';
 
-export default function Signup() {
+import { useState } from 'react';
+import api from '@/lib/api';
+
+export default function Signup() { // Fixed: Added missing function declaration
+  // Fixed: Added missing local states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,9 +16,17 @@ export default function Signup() {
     setError('');
     setSuccess('');
     setLoading(true);
-    // We'll wire this up to the backend on Day 9
-    console.log('Submitting signup', { email, password });
-    setLoading(false);
+    try {
+      await api.post('/auth/register', { email, password });
+      setSuccess('Account created! Redirecting to login...');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

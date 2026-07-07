@@ -1,7 +1,11 @@
 'use client';
+
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import api from '@/lib/api';
 
 export default function Login() {
+  const router = useRouter(); // Fixed: Moved inside the component function
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,9 +15,16 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    // We'll wire this up to the backend on Day 9
-    console.log('Submitting login', { email, password });
-    setLoading(false);
+    try {
+      const res = await api.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      router.push('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
