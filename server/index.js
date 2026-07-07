@@ -1,3 +1,4 @@
+const authenticateToken = require('./middleware/auth');
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
@@ -8,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRoutes);
+
+app.get('/api/dashboard', authenticateToken, (req, res) => {
+  res.json({ message: `Welcome, user ${req.user.id}!`, role: req.user.role });
+});
 
 // Test route
 app.get('/api/test-db', async (req, res) => {
