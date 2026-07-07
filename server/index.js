@@ -1,3 +1,4 @@
+const requireRole = require('./middleware/requireRole');
 const authenticateToken = require('./middleware/auth');
 const express = require('express');
 const cors = require('cors');
@@ -28,4 +29,8 @@ app.get('/api/test-db', async (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+});
+
+app.get('/api/admin-only', authenticateToken, requireRole('admin'), (req, res) => {
+  res.json({ message: 'Welcome, admin! This is a secret admin route.' });
 });
