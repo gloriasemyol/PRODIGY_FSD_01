@@ -1,28 +1,52 @@
 'use client';
-
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const [checking, setChecking] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
     const stored = localStorage.getItem('user');
-    if (stored) {
-      setUser(JSON.parse(stored));
+
+    if (!token || !stored) {
+      router.push('/login');
+      return;
     }
-  }, []);
+
+    setUser(JSON.parse(stored));
+    setChecking(false);
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
+
+  if (checking) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-gray-100">
+        <p className="text-gray-500">Checking authentication...</p>
+      </main>
+    );
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Dashboard</h1>
-        {user ? (
-          <p className="text-gray-600">
-            Logged in as <span className="font-semibold">{user.email}</span> (role: {user.role})
-          </p>
-        ) : (
-          <p className="text-gray-600">Loading...</p>
-        )}
+        <p className="text-gray-600 mb-6">
+          Logged in as <span className="font-semibold">{user.email}</span> (role: {user.role})
+        </p>
+        <button
+          onClick={handleLogout}
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+        >
+          Log Out
+        </button>
       </div>
     </main>
   );
