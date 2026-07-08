@@ -35,19 +35,29 @@ export default function Dashboard() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Dashboard</h1>
-        <p className="text-gray-600 mb-6">
-          Logged in as <span className="font-semibold">{user.email}</span> (role: {user.role})
-        </p>
+  <main className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="bg-white p-8 rounded-lg shadow-md text-center">
+      <h1 className="text-2xl font-bold text-gray-800 mb-2">Dashboard</h1>
+      <p className="text-gray-600 mb-4">
+        Logged in as <span className="font-semibold">{user.email}</span> (role: {user.role})
+      </p>
+
+      {user.role === 'admin' && (
         <button
-          onClick={handleLogout}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+          onClick={() => alert('Welcome to Admin Settings!')}
+          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition mb-4 w-full"
         >
-          Log Out
+          ⚙️ Admin Settings
         </button>
-      </div>
-    </main>
-  );
+      )}
+
+      <button
+        onClick={handleLogout}
+        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition w-full"
+      >
+        Log Out
+      </button>
+    </div>
+  </main>
+);
 }
