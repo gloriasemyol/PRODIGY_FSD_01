@@ -88,11 +88,11 @@ The app will be available at `http://localhost:3000`, with the API at `http://lo
 
 ## 🚀 Deployment
 
-- Database: [Render PostgreSQL / Supabase / Neon]
-- Backend: [Render]
-- Frontend: [Vercel]
+- Database: Neon PostgreSQL
+- Backend: Render — https://prodigy-fsd-01.onrender.com
+- Frontend: Vercel — https://prodigy-fsd-01.vercel.app
 
-Live URL: _(add after Day 14 deployment)_
+Live URL: https://prodigy-fsd-01.vercel.app
 
 ## 🔒 Security Notes
 - Passwords are hashed with bcrypt (10 salt rounds) before storage — never stored in plain text.
