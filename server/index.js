@@ -7,7 +7,9 @@ const authRoutes = require('./routes/auth');
 const pool = require('./db/db');
 
 const app = express();
-app.use(cors());
+app.use(cors({  
+  origin: ['http://localhost:3000', 'https://prodigy-fsd-01.vercel.app'],
+}));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
